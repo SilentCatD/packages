@@ -15,7 +15,7 @@ void main() {
         routes: <RouteBase>[
           GoRoute(path: '/', builder: (_, __) => const Text('home')),
         ],
-        redirect: (_, __) => '/',
+        redirect: (_, __, ___) => const Redirect(path: '/'),
       ),
     );
     final GoRouter router = await createRouterWithRoutingConfig(config, tester);

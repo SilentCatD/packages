@@ -52,7 +52,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -73,7 +73,7 @@ void main() {
               ShellRoute(routes: shellRouteChildren),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -115,7 +115,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -153,7 +153,7 @@ void main() {
           ], builder: mockStackedShellBuilder),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );
@@ -196,7 +196,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -226,7 +226,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -267,7 +267,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -313,7 +313,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -368,7 +368,7 @@ void main() {
               ], builder: mockStackedShellBuilder),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -467,7 +467,7 @@ void main() {
           ], builder: mockStackedShellBuilder),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );
@@ -543,7 +543,7 @@ void main() {
             ),
           ],
           redirectLimit: 10,
-          topRedirect: (BuildContext context, GoRouterState state) {
+          topRedirect: (BuildContext context, GoRouterState state, _) {
             return null;
           },
         );
@@ -590,7 +590,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -647,7 +647,7 @@ void main() {
             ),
           ],
           redirectLimit: 10,
-          topRedirect: (BuildContext context, GoRouterState state) {
+          topRedirect: (BuildContext context, GoRouterState state, _) {
             return null;
           },
         );
@@ -696,7 +696,7 @@ void main() {
             ),
           ],
           redirectLimit: 10,
-          topRedirect: (BuildContext context, GoRouterState state) {
+          topRedirect: (BuildContext context, GoRouterState state, _) {
             return null;
           },
         );
@@ -745,7 +745,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           ),
@@ -795,7 +795,7 @@ void main() {
             ),
           ],
           redirectLimit: 10,
-          topRedirect: (BuildContext context, GoRouterState state) {
+          topRedirect: (BuildContext context, GoRouterState state, _) {
             return null;
           },
         );
@@ -853,7 +853,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           ),
@@ -891,7 +891,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
         navigatorKey: root,
@@ -946,7 +946,7 @@ void main() {
             ),
           ],
           redirectLimit: 10,
-          topRedirect: (BuildContext context, GoRouterState state) {
+          topRedirect: (BuildContext context, GoRouterState state, _) {
             return null;
           },
         );
@@ -973,7 +973,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           );
@@ -1065,7 +1065,7 @@ void main() {
               ),
             ],
             redirectLimit: 10,
-            topRedirect: (BuildContext context, GoRouterState state) {
+            topRedirect: (BuildContext context, GoRouterState state, _) {
               return null;
             },
           ).debugKnownRoutes(),

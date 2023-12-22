@@ -72,18 +72,18 @@ class App extends StatelessWidget {
     ],
 
     // redirect to the login page if the user is not logged in
-    redirect: (BuildContext context, GoRouterState state) {
+    redirect: (BuildContext context, GoRouterState state, _) {
       // if the user is not logged in, they need to login
       final bool loggedIn = _loginInfo.loggedIn;
       final bool loggingIn = state.matchedLocation == '/login';
       if (!loggedIn) {
-        return '/login';
+        return const Redirect(path: '/login');
       }
 
       // if the user is logged in but still on the login page, send them to
       // the home page
       if (loggingIn) {
-        return '/';
+        return const Redirect(path: '/');
       }
 
       // no need to redirect at all

@@ -21,7 +21,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
         navigatorKey: GlobalKey<NavigatorState>(),
@@ -66,7 +66,7 @@ void main() {
               ]),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
         navigatorKey: GlobalKey<NavigatorState>(),
@@ -105,7 +105,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );
@@ -158,7 +158,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );
@@ -229,7 +229,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );
@@ -284,7 +284,7 @@ void main() {
           ),
         ],
         redirectLimit: 10,
-        topRedirect: (BuildContext context, GoRouterState state) {
+        topRedirect: (BuildContext context, GoRouterState state, _) {
           return null;
         },
       );

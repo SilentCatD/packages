@@ -224,7 +224,7 @@ void main() {
         GoRoute(
             path: '/profile',
             builder: dummy,
-            redirect: (_, __) => '/profile/foo'),
+            redirect: (_, __, ___) => const Redirect(path: '/profile/foo')),
         GoRoute(path: '/profile/:kind', builder: dummy),
       ];
 
@@ -244,7 +244,7 @@ void main() {
         GoRoute(
             path: '/profile',
             builder: dummy,
-            redirect: (_, __) => '/profile/foo'),
+            redirect: (_, __, ___) => const Redirect(path: '/profile/foo')),
         GoRoute(path: '/profile/:kind', builder: dummy),
       ];
 
@@ -1339,9 +1339,9 @@ void main() {
       ];
       final Completer<void> completer = Completer<void>();
       final GoRouter router =
-          await createRouter(routes, tester, redirect: (_, __) async {
+          await createRouter(routes, tester, redirect: (_, __, ___) async {
         await completer.future;
-        return '/login';
+        return const Redirect(path: '/login');
       });
       final RouteMatchListCodec codec =
           RouteMatchListCodec(router.configuration);
@@ -1589,7 +1589,7 @@ void main() {
         GoRoute(
           path: '/',
           builder: dummy,
-          redirect: (_, __) => '/family/f2',
+          redirect: (_, __, ___) => const Redirect(path: '/family/f2'),
         ),
         GoRoute(
           path: '/family/:fid',
@@ -1689,9 +1689,11 @@ void main() {
       bool redirected = false;
 
       final GoRouter router = await createRouter(routes, tester,
-          redirect: (BuildContext context, GoRouterState state) {
+          redirect: (BuildContext context, GoRouterState state, ___) {
         redirected = true;
-        return state.matchedLocation == '/login' ? null : '/login';
+        return state.matchedLocation == '/login'
+            ? null
+            : const Redirect(path: '/login');
       });
 
       expect(
@@ -1719,7 +1721,8 @@ void main() {
             GoRoute(
                 path: 'dummy',
                 // Return same location.
-                redirect: (_, GoRouterState state) => state.uri.toString(),
+                redirect: (_, GoRouterState state, __) =>
+                    Redirect(path: state.uri.toString()),
                 builder: (BuildContext context, GoRouterState state) =>
                     const DummyScreen()),
           ],
@@ -1727,9 +1730,9 @@ void main() {
       ];
 
       final GoRouter router = await createRouter(routes, tester,
-          redirect: (BuildContext context, GoRouterState state) {
+          redirect: (BuildContext context, GoRouterState state, _) {
         // Return same location.
-        return state.uri.toString();
+        return Redirect(path: state.uri.toString());
       });
 
       expect(router.routerDelegate.currentConfiguration.uri.toString(), '/');
@@ -1768,10 +1771,10 @@ void main() {
       final GoRouter router = await createRouter(
         routes,
         tester,
-        redirect: (BuildContext context, GoRouterState state) =>
+        redirect: (BuildContext context, GoRouterState state, _) =>
             state.matchedLocation == '/login'
                 ? null
-                : state.namedLocation('login'),
+                : Redirect(path: state.namedLocation('login')),
       );
       expect(
           router.routerDelegate.currentConfiguration.uri.toString(), '/login');
@@ -1788,7 +1791,8 @@ void main() {
               path: 'dummy',
               builder: (BuildContext context, GoRouterState state) =>
                   const DummyScreen(),
-              redirect: (BuildContext context, GoRouterState state) => '/login',
+              redirect: (BuildContext context, GoRouterState state, _) =>
+                  Redirect(path: '/login'),
             ),
             GoRoute(
               path: 'login',
@@ -1818,10 +1822,10 @@ void main() {
                 path: 'dummy',
                 builder: (BuildContext context, GoRouterState state) =>
                     const DummyScreen(),
-                redirect: (BuildContext context, GoRouterState state) {
+                redirect: (BuildContext context, GoRouterState state, _) {
                   // should never be reached.
                   assert(false);
-                  return '/dummy2';
+                  return const Redirect(path: '/dummy2');
                 }),
             GoRoute(
                 path: 'dummy2',
@@ -1836,9 +1840,11 @@ void main() {
       ];
       bool redirected = false;
       final GoRouter router = await createRouter(routes, tester,
-          redirect: (BuildContext context, GoRouterState state) {
+          redirect: (BuildContext context, GoRouterState state, _) {
         redirected = true;
-        return state.matchedLocation == '/login' ? null : '/login';
+        return state.matchedLocation == '/login'
+            ? null
+            : const Redirect(path: '/login');
       });
       redirected = false;
       // Directly set the url through platform message.
@@ -1864,8 +1870,8 @@ void main() {
               path: 'dummy',
               builder: (BuildContext context, GoRouterState state) =>
                   const DummyScreen(),
-              redirect: (BuildContext context, GoRouterState state) =>
-                  state.namedLocation('login'),
+              redirect: (BuildContext context, GoRouterState state, _) =>
+                  Redirect(path: state.namedLocation('login')),
             ),
             GoRoute(
               name: 'login',
@@ -1900,15 +1906,18 @@ void main() {
               path: 'dummy2',
               builder: (BuildContext context, GoRouterState state) =>
                   const DummyScreen(),
-              redirect: (BuildContext context, GoRouterState state) => '/',
+              redirect: (BuildContext context, GoRouterState state, _) =>
+                  const Redirect(path: '/'),
             ),
           ],
         ),
       ];
 
       final GoRouter router = await createRouter(routes, tester,
-          redirect: (BuildContext context, GoRouterState state) =>
-              state.matchedLocation == '/dummy1' ? '/dummy2' : null);
+          redirect: (BuildContext context, GoRouterState state, _) =>
+              state.matchedLocation == '/dummy1'
+                  ? const Redirect(path: '/dummy2')
+                  : null);
       router.go('/dummy1');
       await tester.pump();
       expect(router.routerDelegate.currentConfiguration.uri.toString(), '/');
@@ -1918,11 +1927,11 @@ void main() {
       final GoRouter router = await createRouter(
         <GoRoute>[],
         tester,
-        redirect: (BuildContext context, GoRouterState state) =>
+        redirect: (BuildContext context, GoRouterState state, _) =>
             state.matchedLocation == '/'
-                ? '/login'
+                ? const Redirect(path: '/login')
                 : state.matchedLocation == '/login'
-                    ? '/'
+                    ? const Redirect(path: '/')
                     : null,
         errorBuilder: (BuildContext context, GoRouterState state) =>
             TestErrorScreen(state.error!),
@@ -1942,12 +1951,14 @@ void main() {
           GoRoute(
             path: '/',
             builder: dummy,
-            redirect: (BuildContext context, GoRouterState state) => '/login',
+            redirect: (BuildContext context, GoRouterState state, _) =>
+                const Redirect(path: '/login'),
           ),
           GoRoute(
             path: '/login',
             builder: dummy,
-            redirect: (BuildContext context, GoRouterState state) => '/',
+            redirect: (BuildContext context, GoRouterState state, _) =>
+                const Redirect(path: '/'),
           ),
         ],
         tester,
@@ -1970,12 +1981,15 @@ void main() {
           GoRoute(
             path: '/login',
             builder: dummy,
-            redirect: (BuildContext context, GoRouterState state) => '/',
+            redirect: (BuildContext context, GoRouterState state, _) =>
+                const Redirect(path: '/'),
           ),
         ],
         tester,
-        redirect: (BuildContext context, GoRouterState state) =>
-            state.matchedLocation == '/' ? '/login' : null,
+        redirect: (BuildContext context, GoRouterState state, _) =>
+            state.matchedLocation == '/'
+                ? const Redirect(path: '/login')
+                : null,
         errorBuilder: (BuildContext context, GoRouterState state) =>
             TestErrorScreen(state.error!),
       );
@@ -1994,11 +2008,11 @@ void main() {
       final GoRouter router = await createRouter(
         <GoRoute>[],
         tester,
-        redirect: (BuildContext context, GoRouterState state) =>
+        redirect: (BuildContext context, GoRouterState state, _) =>
             state.matchedLocation == '/'
-                ? '/login?from=${state.uri}'
+                ? Redirect(path: '/login?from=${state.uri}')
                 : state.matchedLocation == '/login'
-                    ? '/'
+                    ? const Redirect(path: '/')
                     : null,
         errorBuilder: (BuildContext context, GoRouterState state) =>
             TestErrorScreen(state.error!),
@@ -2024,7 +2038,8 @@ void main() {
         GoRoute(
           path: '/dummy',
           builder: dummy,
-          redirect: (BuildContext context, GoRouterState state) => '/',
+          redirect: (BuildContext context, GoRouterState state, _) =>
+              const Redirect(path: '/'),
         ),
       ];
 
@@ -2054,7 +2069,7 @@ void main() {
         routes,
         tester,
         initialLocation: '/login?from=/',
-        redirect: (BuildContext context, GoRouterState state) {
+        redirect: (BuildContext context, GoRouterState state, _) {
           expect(Uri.parse(state.uri.toString()).queryParameters, isNotEmpty);
           expect(Uri.parse(state.matchedLocation).queryParameters, isEmpty);
           expect(state.path, isNull);
@@ -2092,7 +2107,7 @@ void main() {
         routes,
         tester,
         initialLocation: '/123',
-        redirect: (BuildContext context, GoRouterState state) {
+        redirect: (BuildContext context, GoRouterState state, _) {
           expect(state.path, isNull);
           expect(state.fullPath, '/:id');
           expect(state.pathParameters.length, 1);
@@ -2111,7 +2126,7 @@ void main() {
       final List<GoRoute> routes = <GoRoute>[
         GoRoute(
           path: '/book/:bookId',
-          redirect: (BuildContext context, GoRouterState state) {
+          redirect: (BuildContext context, GoRouterState state, _) {
             expect(state.uri.toString(), loc);
             expect(state.matchedLocation, loc);
             expect(state.path, '/book/:bookId');
@@ -2150,7 +2165,7 @@ void main() {
               routes: <GoRoute>[
                 GoRoute(
                   path: 'person/:pid',
-                  redirect: (BuildContext context, GoRouterState s) {
+                  redirect: (BuildContext context, GoRouterState s, _) {
                     expect(s.pathParameters['fid'], 'f2');
                     expect(s.pathParameters['pid'], 'p1');
                     return null;
@@ -2187,8 +2202,8 @@ void main() {
       final GoRouter router = await createRouter(
         <GoRoute>[],
         tester,
-        redirect: (BuildContext context, GoRouterState state) =>
-            '/${state.uri}+',
+        redirect: (BuildContext context, GoRouterState state, _) =>
+            Redirect(path: '/${state.uri}+'),
         errorBuilder: (BuildContext context, GoRouterState state) =>
             TestErrorScreen(state.error!),
         redirectLimit: 10,
@@ -2261,7 +2276,7 @@ void main() {
               builder: (BuildContext context, GoRouterState state) {
                 return const LoginScreen();
               },
-              redirect: (BuildContext context, GoRouterState state) {
+              redirect: (BuildContext context, GoRouterState state, _) {
                 isCallRouteRedirect = true;
                 expect(state.extra, isNotNull);
                 return null;
@@ -2275,7 +2290,7 @@ void main() {
       final GoRouter router = await createRouter(
         routes,
         tester,
-        redirect: (BuildContext context, GoRouterState state) {
+        redirect: (BuildContext context, GoRouterState state, _) {
           if (state.uri.toString() == '/login') {
             isCallTopRedirect = true;
             expect(state.extra, isNotNull);
@@ -2304,16 +2319,16 @@ void main() {
                 path: 'dummy',
                 builder: (BuildContext context, GoRouterState state) =>
                     const DummyScreen(),
-                redirect: (BuildContext context, GoRouterState state) =>
-                    '/other',
+                redirect: (BuildContext context, GoRouterState state, _) =>
+                    const Redirect(path: '/other'),
                 routes: <GoRoute>[
                   GoRoute(
                     path: 'dummy2',
                     builder: (BuildContext context, GoRouterState state) =>
                         const DummyScreen(),
-                    redirect: (BuildContext context, GoRouterState state) {
+                    redirect: (BuildContext context, GoRouterState state, _) {
                       assert(false);
-                      return '/other2';
+                      return const Redirect(path: '/other2');
                     },
                   ),
                 ]),
@@ -2404,7 +2419,8 @@ void main() {
         GoRoute(
           path: '/dummy',
           builder: dummy,
-          redirect: (BuildContext context, GoRouterState state) => '/',
+          redirect: (BuildContext context, GoRouterState state, _) =>
+              const Redirect(path: '/'),
         ),
       ];
 
@@ -4035,7 +4051,7 @@ void main() {
             StatefulShellBranch(routes: <GoRoute>[
               GoRoute(
                 path: '/c',
-                redirect: (_, __) => '/c/main2',
+                redirect: (_, __, ___) => const Redirect(path: '/c/main2'),
               ),
               GoRoute(
                 path: '/c/main1',
@@ -4058,9 +4074,9 @@ void main() {
         tester,
         initialLocation: '/a',
         navigatorKey: rootNavigatorKey,
-        redirect: (_, GoRouterState state) {
+        redirect: (_, GoRouterState state, __) {
           if (state.uri.toString().startsWith('/b')) {
-            return redirectDestinationBranchB;
+            return Redirect(path: redirectDestinationBranchB);
           }
           return null;
         },
@@ -5076,7 +5092,7 @@ void main() {
           routes: <GoRoute>[
             GoRoute(
               path: ':id',
-              redirect: (_, GoRouterState state) {
+              redirect: (_, GoRouterState state, __) {
                 expect(state.pathParameters['id'], isNotNull);
                 return null;
               },

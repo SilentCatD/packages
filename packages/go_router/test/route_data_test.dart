@@ -175,8 +175,9 @@ final StatefulShellRoute _statefulShellRouteDataPageBuilder =
 class _GoRouteDataRedirectPage extends GoRouteData {
   const _GoRouteDataRedirectPage();
   @override
-  FutureOr<String> redirect(BuildContext context, GoRouterState state) =>
-      '/build-page';
+  FutureOr<RedirectAction> redirect(
+          BuildContext context, GoRouterState state, _) =>
+      const Redirect(path: '/build-page');
 }
 
 final GoRoute _goRouteDataRedirect = GoRouteData.$route(

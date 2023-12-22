@@ -45,8 +45,8 @@ class RoutingConfig {
     this.redirectLimit = 5,
   });
 
-  static FutureOr<String?> _defaultRedirect(
-          BuildContext context, GoRouterState state) =>
+  static FutureOr<RedirectAction?> _defaultRedirect(
+          BuildContext context, GoRouterState state, NavigatingType type) =>
       null;
 
   /// The supported routes.
