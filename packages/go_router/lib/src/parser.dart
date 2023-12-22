@@ -27,6 +27,13 @@ typedef ParserExceptionHandler = RouteMatchList Function(
   RouteMatchList routeMatchList,
 );
 
+class RedirectResult {
+  final RouteMatchList routeMatchList;
+  final NavigatingType? type;
+
+  const RedirectResult({required this.routeMatchList, this.type});
+}
+
 /// Converts between incoming URLs and a [RouteMatchList] using [RouteMatcher].
 /// Also performs redirection using [RouteRedirector].
 class GoRouteInformationParser extends RouteInformationParser<RouteMatchList> {
@@ -71,7 +78,8 @@ class GoRouteInformationParser extends RouteInformationParser<RouteMatchList> {
       final RouteMatchList matchList =
           _routeMatchListCodec.decode(state as Map<Object?, Object?>);
       return debugParserFuture = _redirect(context, matchList)
-          .then<RouteMatchList>((RouteMatchList value) {
+          .then<RouteMatchList>((RedirectResult redirectResult) {
+        final RouteMatchList value = redirectResult.routeMatchList;
         if (value.isError && onParserException != null) {
           return onParserException!(context, value);
         }
@@ -98,7 +106,8 @@ class GoRouteInformationParser extends RouteInformationParser<RouteMatchList> {
     return debugParserFuture = _redirect(
       context,
       initialMatches,
-    ).then<RouteMatchList>((RouteMatchList matchList) {
+    ).then<RouteMatchList>((RedirectResult redirectResult) {
+      final RouteMatchList matchList = redirectResult.routeMatchList;
       if (matchList.isError && onParserException != null) {
         return onParserException!(context, matchList);
       }
@@ -114,7 +123,7 @@ class GoRouteInformationParser extends RouteInformationParser<RouteMatchList> {
         matchList,
         baseRouteMatchList: state.baseRouteMatchList,
         completer: state.completer,
-        type: state.type,
+        type: redirectResult.type ?? state.type,
       );
     });
   }
@@ -151,12 +160,12 @@ class GoRouteInformationParser extends RouteInformationParser<RouteMatchList> {
     );
   }
 
-  Future<RouteMatchList> _redirect(
+  Future<RedirectResult> _redirect(
       BuildContext context, RouteMatchList routeMatch) {
-    final FutureOr<RouteMatchList> redirectedFuture = configuration
+    final FutureOr<RedirectResult> redirectedFuture = configuration
         .redirect(context, routeMatch, redirectHistory: <RouteMatchList>[]);
-    if (redirectedFuture is RouteMatchList) {
-      return SynchronousFuture<RouteMatchList>(redirectedFuture);
+    if (redirectedFuture is RedirectResult) {
+      return SynchronousFuture<RedirectResult>(redirectedFuture);
     }
     return redirectedFuture;
   }

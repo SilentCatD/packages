@@ -8,16 +8,30 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
+import '../go_router.dart';
 import 'logging.dart';
-import 'match.dart';
-import 'misc/errors.dart';
 import 'path_utils.dart';
-import 'route.dart';
-import 'router.dart';
-import 'state.dart';
+
+abstract class RedirectAction {
+  const RedirectAction();
+}
+
+class Redirect extends RedirectAction {
+  final NavigatingType? type;
+  final String path;
+
+  const Redirect({
+    this.type,
+    required this.path,
+  });
+}
+
+class Skip extends RedirectAction {
+  const Skip();
+}
 
 /// The signature of the redirect callback.
-typedef GoRouterRedirect = FutureOr<String?> Function(
+typedef GoRouterRedirect = FutureOr<RedirectAction?> Function(
     BuildContext context, GoRouterState state);
 
 /// The route configuration for GoRouter configured by the app.
@@ -422,7 +436,7 @@ class RouteConfiguration {
 
   /// Processes redirects by returning a new [RouteMatchList] representing the new
   /// location.
-  FutureOr<RouteMatchList> redirect(
+  FutureOr<RedirectResult> redirect(
       BuildContext context, FutureOr<RouteMatchList> prevMatchListFuture,
       {required List<RouteMatchList> redirectHistory}) {
     FutureOr<RouteMatchList> processRedirect(RouteMatchList prevMatchList) {
@@ -479,12 +493,13 @@ class RouteConfiguration {
 
       redirectHistory.add(prevMatchList);
       // Check for top-level redirect
-      final FutureOr<String?> topRedirectResult = _routingConfig.value.redirect(
+      final FutureOr<RedirectAction?> topRedirectResult =
+          _routingConfig.value.redirect(
         context,
         buildTopLevelGoRouterState(prevMatchList),
       );
 
-      if (topRedirectResult is String?) {
+      if (topRedirectResult is RedirectAction?) {
         return processTopLevelRedirect(topRedirectResult);
       }
       return topRedirectResult.then<RouteMatchList>(processTopLevelRedirect);
