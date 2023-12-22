@@ -26,7 +26,7 @@ void main() {
               return Text((state.extra as ComplexData?)?.data ?? empty);
             }),
       ],
-      redirect: (BuildContext context, _) {
+      redirect: (BuildContext context, _, __) {
         // Set up dependency.
         SimpleDependencyProvider.of(context);
         return null;

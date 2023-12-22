@@ -18,7 +18,7 @@ void main() {
   });
 
   test('does not throw when only redirect is provided', () {
-    GoRoute(path: '/', redirect: (_, __) => '/a');
+    GoRoute(path: '/', redirect: (_, __, ___) => const Redirect(path: '/a'));
   });
 
   testWidgets('ShellRoute can use parent navigator key',
@@ -193,7 +193,7 @@ void main() {
             routes: <RouteBase>[
               GoRoute(
                 path: 'route',
-                redirect: (_, __) => '/route/1',
+                redirect: (_, __, ___) => const Redirect(path: '/route/1'),
                 routes: <RouteBase>[
                   GoRoute(
                     path: '1',
@@ -228,7 +228,7 @@ void main() {
             routes: <RouteBase>[
               GoRoute(
                 path: 'route',
-                redirect: (_, __) => '/route',
+                redirect: (_, __, ___) => const Redirect(path: '/route'),
                 routes: <RouteBase>[
                   GoRoute(
                     path: '1',
@@ -261,7 +261,7 @@ void main() {
           routes: <RouteBase>[
             GoRoute(
               path: '/',
-              redirect: (_, __) => '/route',
+              redirect: (_, __, ___) => const Redirect(path: '/route'),
               routes: <RouteBase>[
                 GoRoute(
                   parentNavigatorKey: key2,

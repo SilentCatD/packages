@@ -54,7 +54,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -158,7 +158,7 @@ void main() {
     final RouteConfiguration configuration = createRouteConfiguration(
       routes: routes,
       redirectLimit: 100,
-      topRedirect: (_, __) => null,
+      topRedirect: (_, __, ___) => null,
       navigatorKey: GlobalKey<NavigatorState>(),
     );
 
@@ -198,7 +198,7 @@ void main() {
     final RouteConfiguration configuration = createRouteConfiguration(
       routes: routes,
       redirectLimit: 100,
-      topRedirect: (_, __) => null,
+      topRedirect: (_, __, ___) => null,
       navigatorKey: GlobalKey<NavigatorState>(),
     );
 
@@ -230,7 +230,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -266,7 +266,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, GoRouterState state) {
+      redirect: (_, GoRouterState state, __) {
         lastRedirectLocation = state.uri.toString();
         return null;
       },
@@ -296,7 +296,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -335,9 +335,9 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (BuildContext context, GoRouterState state) {
+      redirect: (BuildContext context, GoRouterState state, _) {
         if (state.uri.toString() != '/123/family/345') {
-          return '/123/family/345';
+          return const Redirect(path: '/123/family/345');
         }
         return null;
       },
@@ -370,7 +370,7 @@ void main() {
           ),
           GoRoute(
             path: 'redirect',
-            redirect: (_, __) => '/123/family/345',
+            redirect: (_, __, ___) => const Redirect(path: '/123/family/345'),
             builder: (_, __) => throw UnimplementedError(),
           ),
         ],
@@ -380,7 +380,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -409,7 +409,7 @@ void main() {
       tester,
       routes: routes,
       redirectLimit: 100,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -426,14 +426,14 @@ void main() {
       GoRoute(
         path: '/abc',
         builder: (_, __) => const Placeholder(),
-        redirect: (BuildContext context, GoRouterState state) =>
-            state.uri.toString(),
+        redirect: (BuildContext context, GoRouterState state, _) =>
+            Redirect(path: state.uri.toString()),
       ),
     ];
     final GoRouteInformationParser parser = await createParser(
       tester,
       routes: routes,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
@@ -477,7 +477,7 @@ void main() {
     final GoRouteInformationParser parser = await createParser(
       tester,
       routes: routes,
-      redirect: (_, __) => null,
+      redirect: (_, __, ___) => null,
     );
 
     final BuildContext context = tester.element(find.byType(Router<Object>));
