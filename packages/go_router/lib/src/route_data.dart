@@ -8,8 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 import 'package:meta/meta_meta.dart';
 
-import 'route.dart';
-import 'state.dart';
+import '../go_router.dart';
 
 /// Baseclass for supporting
 /// [Type-safe routing](https://pub.dev/documentation/go_router/latest/topics/Type-safe%20routes-topic.html).
@@ -61,7 +60,9 @@ abstract class GoRouteData extends RouteData {
   /// [redirect].
   ///
   /// Corresponds to [GoRoute.redirect].
-  FutureOr<String?> redirect(BuildContext context, GoRouterState state) => null;
+  FutureOr<RedirectAction?> redirect(
+          BuildContext context, GoRouterState state) =>
+      null;
 
   /// A helper function used by generated code.
   ///
@@ -103,7 +104,8 @@ abstract class GoRouteData extends RouteData {
     Page<void> pageBuilder(BuildContext context, GoRouterState state) =>
         factoryImpl(state).buildPage(context, state);
 
-    FutureOr<String?> redirect(BuildContext context, GoRouterState state) =>
+    FutureOr<RedirectAction?> redirect(
+            BuildContext context, GoRouterState state) =>
         factoryImpl(state).redirect(context, state);
 
     return GoRoute(
