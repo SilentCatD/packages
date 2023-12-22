@@ -41,7 +41,7 @@ class Bookstore extends StatelessWidget {
     routes: <GoRoute>[
       GoRoute(
         path: '/',
-        redirect: (_, __) => '/books',
+        redirect: (_, __, ___) => const Redirect(path: '/books'),
       ),
       GoRoute(
         path: '/signin',
@@ -58,12 +58,12 @@ class Bookstore extends StatelessWidget {
       ),
       GoRoute(
         path: '/books',
-        redirect: (_, __) => '/books/popular',
+        redirect: (_, __, ___) => const Redirect(path: '/books/popular'),
       ),
       GoRoute(
         path: '/book/:bookId',
-        redirect: (BuildContext context, GoRouterState state) =>
-            '/books/all/${state.pathParameters['bookId']}',
+        redirect: (BuildContext context, GoRouterState state, _) =>
+            Redirect(path: '/books/all/${state.pathParameters['bookId']}'),
       ),
       GoRoute(
         path: '/books/:kind(new|all|popular)',
@@ -90,8 +90,8 @@ class Bookstore extends StatelessWidget {
       ),
       GoRoute(
         path: '/author/:authorId',
-        redirect: (BuildContext context, GoRouterState state) =>
-            '/authors/${state.pathParameters['authorId']}',
+        redirect: (BuildContext context, GoRouterState state, _) =>
+            Redirect(path: '/authors/${state.pathParameters['authorId']}'),
       ),
       GoRoute(
         path: '/authors',
@@ -133,17 +133,17 @@ class Bookstore extends StatelessWidget {
     debugLogDiagnostics: true,
   );
 
-  String? _guard(BuildContext context, GoRouterState state) {
+  Redirect? _guard(BuildContext context, GoRouterState state, _) {
     final bool signedIn = _auth.signedIn;
     final bool signingIn = state.matchedLocation == '/signin';
 
     // Go to /signin if the user is not signed in
     if (!signedIn && !signingIn) {
-      return '/signin';
+      return const Redirect(path: '/signin');
     }
     // Go to /books if the user is signed in and tries to go to /signin.
     else if (signedIn && signingIn) {
-      return '/books';
+      return const Redirect(path: '/books');
     }
 
     // no redirect

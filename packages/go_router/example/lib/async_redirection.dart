@@ -50,20 +50,20 @@ class App extends StatelessWidget {
     ],
 
     // redirect to the login page if the user is not logged in
-    redirect: (BuildContext context, GoRouterState state) async {
+    redirect: (BuildContext context, GoRouterState state, _) async {
       // Using `of` method creates a dependency of StreamAuthScope. It will
       // cause go_router to reparse current route if StreamAuth has new sign-in
       // information.
       final bool loggedIn = await StreamAuthScope.of(context).isSignedIn();
       final bool loggingIn = state.matchedLocation == '/login';
       if (!loggedIn) {
-        return '/login';
+        return const Redirect(path: '/login');
       }
 
       // if the user is logged in but still on the login page, send them to
       // the home page
       if (loggingIn) {
-        return '/';
+        return const Redirect(path: '/');
       }
 
       // no need to redirect at all
@@ -220,6 +220,7 @@ class StreamAuth {
   final int refreshInterval;
 
   Timer? _timer;
+
   Timer _createRefreshTimer() {
     return Timer(Duration(seconds: refreshInterval), () {
       _userStreamController.add(null);
