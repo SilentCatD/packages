@@ -61,7 +61,7 @@ abstract class GoRouteData extends RouteData {
   ///
   /// Corresponds to [GoRoute.redirect].
   FutureOr<RedirectAction?> redirect(
-          BuildContext context, GoRouterState state) =>
+          BuildContext context, GoRouterState state, NavigatingType type) =>
       null;
 
   /// A helper function used by generated code.
@@ -105,8 +105,8 @@ abstract class GoRouteData extends RouteData {
         factoryImpl(state).buildPage(context, state);
 
     FutureOr<RedirectAction?> redirect(
-            BuildContext context, GoRouterState state) =>
-        factoryImpl(state).redirect(context, state);
+            BuildContext context, GoRouterState state, NavigatingType type) =>
+        factoryImpl(state).redirect(context, state, type);
 
     return GoRoute(
       path: path,

@@ -46,7 +46,7 @@ class RoutingConfig {
   });
 
   static FutureOr<RedirectAction?> _defaultRedirect(
-          BuildContext context, GoRouterState state) =>
+          BuildContext context, GoRouterState state, NavigatingType type) =>
       null;
 
   /// The supported routes.

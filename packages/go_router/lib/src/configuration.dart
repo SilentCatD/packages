@@ -32,7 +32,7 @@ class Skip extends RedirectAction {
 
 /// The signature of the redirect callback.
 typedef GoRouterRedirect = FutureOr<RedirectAction?> Function(
-    BuildContext context, GoRouterState state);
+    BuildContext context, GoRouterState state, NavigatingType type);
 
 /// The route configuration for GoRouter configured by the app.
 class RouteConfiguration {
@@ -438,7 +438,8 @@ class RouteConfiguration {
   /// location.
   FutureOr<RedirectResult> redirect(
       BuildContext context, FutureOr<RouteMatchList> prevMatchListFuture,
-      {required List<RouteMatchList> redirectHistory}) {
+      {required List<RouteMatchList> redirectHistory,
+      required NavigatingType type}) {
     FutureOr<RedirectResult> processRedirect(RouteMatchList prevMatchList) {
       FutureOr<RedirectResult> processTopLevelRedirect(
           RedirectAction? topRedirectLocation) {
@@ -460,6 +461,7 @@ class RouteConfiguration {
             context,
             newMatch,
             redirectHistory: redirectHistory,
+            type: redirectAction.type ?? type,
           );
         }
 
@@ -480,18 +482,16 @@ class RouteConfiguration {
               return RedirectResult(
                   routeMatchList: newMatch, type: redirectAction.type);
             }
-            return redirect(
-              context,
-              newMatch,
-              redirectHistory: redirectHistory,
-            );
+            return redirect(context, newMatch,
+                redirectHistory: redirectHistory,
+                type: redirectAction.type ?? type);
           }
 
           return RedirectResult(routeMatchList: prevMatchList);
         }
 
         final FutureOr<RedirectAction?> routeLevelRedirectResult =
-            _getRouteLevelRedirect(context, prevMatchList, 0);
+            _getRouteLevelRedirect(context, prevMatchList, 0, type);
         if (routeLevelRedirectResult is RedirectAction?) {
           return processRouteLevelRedirect(routeLevelRedirectResult);
         }
@@ -505,6 +505,7 @@ class RouteConfiguration {
           _routingConfig.value.redirect(
         context,
         buildTopLevelGoRouterState(prevMatchList),
+        type,
       );
 
       if (topRedirectResult is RedirectAction?) {
@@ -523,6 +524,7 @@ class RouteConfiguration {
     BuildContext context,
     RouteMatchList matchList,
     int currentCheckIndex,
+    NavigatingType type,
   ) {
     if (currentCheckIndex >= matchList.matches.length) {
       return null;
@@ -531,7 +533,7 @@ class RouteConfiguration {
     FutureOr<RedirectAction?> processRouteRedirect(
             RedirectAction? newLocation) =>
         newLocation ??
-        _getRouteLevelRedirect(context, matchList, currentCheckIndex + 1);
+        _getRouteLevelRedirect(context, matchList, currentCheckIndex + 1, type);
     final RouteBase route = match.route;
     FutureOr<RedirectAction?> routeRedirectResult;
     if (route is GoRoute && route.redirect != null) {
@@ -550,6 +552,7 @@ class RouteConfiguration {
           pathParameters: effectiveMatchList.pathParameters,
           pageKey: match.pageKey,
         ),
+        type,
       );
     }
     if (routeRedirectResult is RedirectAction?) {
